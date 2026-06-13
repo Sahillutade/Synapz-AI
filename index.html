@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/png" href="/public/synapzai.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <title>Synapz AI</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link rel="stylesheet" href="./src/theme.css">
+    <script>
+      window.tailwind = {
+        theme: {
+          extend: {
+            colors: {
+              background: 'var(--background)',
+              foreground: 'var(--foreground)',
+              card: {
+                DEFAULT: 'var(--card)',
+                foreground: 'var(--card-foreground)',
+              },
+              popover: {
+                DEFAULT: 'var(--popover)',
+                foreground: 'var(--popover-foreground)',
+              },
+              primary: {
+                DEFAULT: 'var(--primary)',
+                foreground: 'var(--primary-foreground)',
+              },
+              secondary: {
+                DEFAULT: 'var(--secondary)',
+                foreground: 'var(--secondary-foreground)',
+              },
+              muted: {
+                DEFAULT: 'var(--muted)',
+                foreground: 'var(--muted-foreground)',
+              },
+              accent: {
+                DEFAULT: 'var(--accent)',
+                foreground: 'var(--accent-foreground)',
+              },
+              destructive: {
+                DEFAULT: 'var(--destructive)',
+                foreground: 'var(--destructive-foreground)',
+              },
+              border: 'var(--border)',
+              input: 'var(--input)',
+              ring: 'var(--ring)',
+              sidebar: {
+                DEFAULT: 'var(--sidebar)',
+                foreground: 'var(--sidebar-foreground)',
+                primary: {
+                  DEFAULT: 'var(--sidebar-primary)',
+                  foreground: 'var(--sidebar-primary-foreground)',
+                },
+                accent: {
+                  DEFAULT: 'var(--sidebar-accent)',
+                  foreground: 'var(--sidebar-accent-foreground)',
+                },
+                border: 'var(--sidebar-border)',
+                ring: 'var(--sidebar-ring)',
+              },
+              chart: {
+                1: 'var(--chart-1)',
+                2: 'var(--chart-2)',
+                3: 'var(--chart-3)',
+                4: 'var(--chart-4)',
+                5: 'var(--chart-5)',
+              },
+              
+            }
+          }
+        }
+      }
+    </script>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    
+  </head>
+  <body>
+    <div id="root"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>

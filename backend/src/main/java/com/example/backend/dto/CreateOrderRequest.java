@@ -1,0 +1,15 @@
+package com.example.backend.dto;
+
+public class CreateOrderRequest {
+
+    private long packageId;
+
+    public long getPackageId() {
+        return packageId;
+    }
+
+    public void setPackageId(long packageId) {
+        this.packageId = packageId;
+    }
+
+}
