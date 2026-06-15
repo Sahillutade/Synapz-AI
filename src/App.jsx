@@ -6,11 +6,13 @@ import { LandingPage } from './components/landing-page'
 function App() {
 
   return (
-    <HashRouter>
+    <main className="dark bg-background">
+      <HashRouter>
       <Routes>
         <Route path='/' element={<LandingPage />}></Route>
       </Routes>
     </HashRouter>
+    </main>
   )
 }
 
