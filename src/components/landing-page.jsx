@@ -47,7 +47,7 @@ export function LandingPage() {
                 <div className="absolute inset-0 glow-grid opacity-40" aria-hidden="true"></div>
                 <div className="absolute -top-24 left-1/2 size-[36rem] -translate-x-1/2 rounded-full bg-first/20 blur-3xl animate-pulse-glow" aria-hidden="true"></div>
                 <div className="relative mx-auto flex w-full max-w-6xl flex-col items-center justify-center px-4 pb-20 pt-20 text-center sm:px-6 sm:pt-28">
-                    <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-edge/70 bg-second/40 px-4 py-1.5 text-sm text-muted-foreground animate-fade-in">
+                    <div className="mb-6 inline-flex items-center gap-2 rounded-full border-edge/70 bg-second/40 px-4 py-1.5 text-sm text-muted-foreground animate-fade-in">
                         <span className="bi bi-stars size-3.5 text-first" />
                         Meet your new thinking partner
                     </div>
@@ -60,8 +60,10 @@ export function LandingPage() {
                     </p>
                     <div className="mt-9 flex flex-col items-center gap-3 sm:flex-row animate-fade-in-up" style={{ animationDelay: '160ms' }}>
                         <button className="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 bg-first text-first-foreground hover:bg-first/90 h-10 rounded-3 px-6 gap-2">
-                            Get started free
-                            <span className="bi bi-arrow-right size-4 -mt-1"></span>
+                            <Link to={'/registerstep1'} className="text-decoration-none" style={{ color: 'var(--first-foreground)' }}>
+                                Get started free
+                                <span className="bi bi-arrow-right size-4 pl-2"></span>
+                            </Link>
                         </button>
                         <button className="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 border shadow-xs hover:bg-accent text-accent-foreground bg-input/30 border-input dark:hover:bg-input/50 h-10 rounded-3 px-6 bg-secondary/30">
                             Login
@@ -138,6 +140,17 @@ export function LandingPage() {
                     </div>
                 </div>
             </section>
+
+            <footer className="border-t border-edge/60 py-8">
+                <div className="mx-auto flex w-full max-w-6xl flex-col items-center justify-between gap-3 px-4 text-sm text-muted-foreground sm:flex-row sm:px-6">
+                    <p>© {new Date().getFullYear()} Synapz AI. A demo experience.</p>
+                    <div className="flex gap-5">
+                        <Link className="hover:text-foreground text-decoration-none" style={{ color: 'var(--muted-foreground)' }}>Log in</Link>
+                        <Link className="hover:text-foreground text-decoration-none" style={{ color: 'var(--muted-foreground)' }}>Register</Link>
+                        <Link className="hover:text-foreground text-decoration-none" style={{ color: 'var(--muted-foreground)' }}>Pricing</Link>
+                    </div>
+                </div>
+            </footer>
         </div>
     )
 
