@@ -7,7 +7,7 @@ import { Link, useNavigate } from "react-router-dom";
 
 export function SiteHeader() {
 
-    const [cookies, , removeCookies] = useCookies(["user"]);
+    const [cookies, , removeCookie] = useCookies(["user"]);
     const navigate = useNavigate();
 
     const user = cookies.user;
@@ -15,15 +15,26 @@ export function SiteHeader() {
     const [userInfo, setUserInfo] = useState(null);
 
     useEffect(() => {
+        if(!user) return;
+
         const fetchUserInfo = async () => {
-            const info = await axios.get(`http://localhost:8080/user/details`);
+            try {
+                const info = await axios.get(`http://localhost:8080/user/details`,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${user}`
+                        }
+                    }
+                );
 
-            setUserInfo(info.data);
-            return;
+                setUserInfo(info.data);
+            }
+            catch(error) {
+                console.error(error);
+            }
         }
-
         fetchUserInfo();
-    },[])
+    },[user]);
 
     return(
         <header className="sticky top-0 z-40 border-b border-edge/60 bg-background/80 backdrop-blur-xl">

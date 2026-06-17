@@ -1,8 +1,6 @@
 import { Link } from "react-router-dom";
 import { SiteHeader } from "./site-header";
-
-
-
+import { useCookies } from "react-cookie";
 
 export function LandingPage() {
 
@@ -37,7 +35,9 @@ export function LandingPage() {
             title: 'Plans that scale',
             desc: 'Start free, upgrade to Plus, Pro, or Ultra as your needs grow.',
         },
-    ]
+    ];
+
+    const [cookies] = useCookies(['user']);
 
     return(
         <div className="flex min-h-screen flex-col">
