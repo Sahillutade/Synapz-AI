@@ -84,6 +84,7 @@ export function RegisterStep1(){
             const result = await response.data();
 
             console.log(result);
+            navigate("/registerotp");
             
         }
         catch(error){
