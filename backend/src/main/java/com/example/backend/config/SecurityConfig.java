@@ -71,7 +71,8 @@ public class SecurityConfig {
                         "/user/register/**",
                         "/user/login",
                         "/user/update",
-                        "/user/change-password/**"
+                        "/user/change-password/**",
+                        "/subscription/**"
                     )
                     .permitAll()
                     .anyRequest()

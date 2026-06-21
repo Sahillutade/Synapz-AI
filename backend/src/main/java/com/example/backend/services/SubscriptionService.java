@@ -1,10 +1,13 @@
 package com.example.backend.services;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.backend.dto.PackageFeatureDTO;
+import com.example.backend.dto.SubscriptionPackageDTO;
 import com.example.backend.enums.PaymentStatus;
 import com.example.backend.enums.SubscriptionStatus;
 import com.example.backend.model.Payment;
@@ -12,6 +15,7 @@ import com.example.backend.model.SubscriptionPackage;
 import com.example.backend.model.User;
 import com.example.backend.model.UserSubscription;
 import com.example.backend.repository.PaymentRepository;
+import com.example.backend.repository.SubscriptionPackageRepository;
 import com.example.backend.repository.UserSubscriptionRepository;
 
 import brevo.ApiException;
@@ -23,19 +27,48 @@ public class SubscriptionService {
     private UserSubscriptionRepository subscriptionRepo;
 
     @Autowired
+    private SubscriptionPackageRepository packageRepo;
+
+    @Autowired
     private PaymentRepository paymentRepo;
 
     @Autowired
     private EmailService emailService;
 
+    public List<SubscriptionPackageDTO> getAllPackages() {
+
+        List<SubscriptionPackage> packages = packageRepo.findAll();
+
+        return packages.stream().map(pkg -> new SubscriptionPackageDTO(
+            pkg.getId(),
+            pkg.getPackageName(),
+            pkg.getDescription(),
+            pkg.getPrice(),
+            pkg.getBillingCycle(),
+            pkg.getFeatures().stream().map(feature -> new PackageFeatureDTO(
+                feature.getId(),
+                feature.getFeatureName()
+            )).toList()
+        ))
+        .toList();
+
+    }
+
     public void activateSubscription(User user, SubscriptionPackage pack, String orderId, String paymentId) throws ApiException {
+
+        LocalDateTime now = LocalDateTime.now();
+
+        subscriptionRepo.findByUserAndStatus(user, SubscriptionStatus.ACTIVE).ifPresent(existingSubscription -> {
+            existingSubscription.setStatus(SubscriptionStatus.EXPIRED);
+            subscriptionRepo.save(existingSubscription);
+        });
 
         UserSubscription subscription = new UserSubscription();
 
         subscription.setUser(user);
         subscription.setSubscriptionPackage(pack);
         subscription.setStatus(SubscriptionStatus.ACTIVE);
-        LocalDateTime now = LocalDateTime.now();
+        
 
         subscription.setStartDate(now);
         subscription.setEndDate(calculateEndDate(pack, now));
@@ -65,6 +98,23 @@ public class SubscriptionService {
             case MONTHLY -> startDate.plusMonths(1);
             case ANNUAL -> startDate.plusYears(1);
         };
+
+    }
+
+    public void activateFreeSubscription(User user) {
+
+        SubscriptionPackage freePackage = packageRepo.findByPackageName("Free").orElseThrow(() -> new RuntimeException("Free package not found"));
+
+        UserSubscription subscription = new UserSubscription();
+
+        subscription.setUser(user);
+        subscription.setSubscriptionPackage(freePackage);
+        subscription.setStatus(SubscriptionStatus.ACTIVE);
+
+        subscription.setStartDate(null);
+        subscription.setEndDate(null);
+
+        subscriptionRepo.save(subscription);
 
     }
 

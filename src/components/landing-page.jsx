@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { SiteHeader } from "./site-header";
 import { useCookies } from "react-cookie";
 
@@ -39,6 +39,12 @@ export function LandingPage() {
 
     const [cookies] = useCookies(['user']);
 
+    let navigate = useNavigate();
+
+    const handleRouting = () => {
+        navigate('/login');
+    };
+
     return(
         <div className="flex min-h-screen flex-col">
             <SiteHeader />
@@ -65,7 +71,7 @@ export function LandingPage() {
                                 <span className="bi bi-arrow-right size-4 pl-2"></span>
                             </Link>
                         </button>
-                        <button className="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 border shadow-xs hover:bg-accent text-accent-foreground bg-input/30 border-input dark:hover:bg-input/50 h-10 rounded-3 px-6 bg-secondary/30">
+                        <button onClick={handleRouting} className="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 border shadow-xs hover:bg-accent text-accent-foreground bg-input/30 border-input dark:hover:bg-input/50 h-10 rounded-3 px-6 bg-secondary/30">
                             Login
                         </button>
                     </div>
@@ -128,12 +134,12 @@ export function LandingPage() {
                     </p>
                     <div className="relative mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
                         <button className="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium transition-all shrink-0 outline-none bg-first text-first-foreground hover:bg-first/90 h-10 rounded-3 px-6 gap-2">
-                            <Link className="text-decoration-none" style={{ color: 'var(--first-foreground)' }}>Create your account
+                            <Link to={'/registerstep1'} className="text-decoration-none" style={{ color: 'var(--first-foreground)' }}>Create your account
                                 <span className="bi bi-arrow-right size-4 pl-3"></span>
                             </Link>
                         </button>
                         <button className="inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium transition-all shrink-0 outline-none border shadow-xs hover:bg-accent hover:text-accent-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 h-10 rounded-3 px-6 bg-background/40">
-                            <Link className="text-decoration-none" style={{ color: 'var(--foreground)' }}>
+                            <Link to={'/login'} className="text-decoration-none" style={{ color: 'var(--foreground)' }}>
                                 I already have an account
                             </Link>
                         </button>
@@ -145,8 +151,8 @@ export function LandingPage() {
                 <div className="mx-auto flex w-full max-w-6xl flex-col items-center justify-between gap-3 px-4 text-sm text-muted-foreground sm:flex-row sm:px-6">
                     <p>© {new Date().getFullYear()} Synapz AI. A demo experience.</p>
                     <div className="flex gap-5">
-                        <Link className="hover:text-foreground text-decoration-none" style={{ color: 'var(--muted-foreground)' }}>Log in</Link>
-                        <Link className="hover:text-foreground text-decoration-none" style={{ color: 'var(--muted-foreground)' }}>Register</Link>
+                        <Link to={'/login'} className="hover:text-foreground text-decoration-none" style={{ color: 'var(--muted-foreground)' }}>Log in</Link>
+                        <Link to={'/registerstep1'} className="hover:text-foreground text-decoration-none" style={{ color: 'var(--muted-foreground)' }}>Register</Link>
                         <Link className="hover:text-foreground text-decoration-none" style={{ color: 'var(--muted-foreground)' }}>Pricing</Link>
                     </div>
                 </div>

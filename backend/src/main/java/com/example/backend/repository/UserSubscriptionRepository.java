@@ -19,4 +19,6 @@ public interface UserSubscriptionRepository extends JpaRepository<UserSubscripti
 
     Optional<UserSubscription> findByUser(User user);
 
+    Optional<UserSubscription> findByUserAndStatus(User user, SubscriptionStatus status);
+
 }

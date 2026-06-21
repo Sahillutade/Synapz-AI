@@ -1,8 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { SiteHeader } from "./site-header";
-import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { useCookies } from "react-cookie";
 
 
 export function RegisterStep1(){
@@ -18,9 +17,6 @@ export function RegisterStep1(){
     const fileRef = useRef(null);
 
     let navigate = useNavigate();
-
-    const [, setCookie, ] = useCookies(['user']);
-    const [params] = useSearchParams();
 
     const handleImageChange = (e) => {
         const file = e.target.files?.[0];
@@ -81,10 +77,10 @@ export function RegisterStep1(){
                 multipartData
             );
 
-            const result = await response.data();
+            const result = response.data;
 
             console.log(result);
-            navigate("/registerotp");
+            navigate(`/registerotp/${result}`);
             
         }
         catch(error){
@@ -96,14 +92,9 @@ export function RegisterStep1(){
         window.location.href = "http://localhost:8080/oauth2/authorization/google";
     };
 
-    useEffect(() => {
-        const token = params.get("token");
-
-        if(token) {
-            setCookie("user", token, { path: "/", });
-            navigate("/", { replace: true });
-        }
-    },[params, navigate, setCookie])
+    const handleback = () => {
+        navigate("/");
+    }
 
     return(
         <div className="flex min-h-screen flex-col">
@@ -113,7 +104,7 @@ export function RegisterStep1(){
                 <div className="absolute -top-20 left-1/2 size-[30rem] -translate-x-1/2 rounded-full bg-first/15 blur-3xl" aria-hidden="true"></div>
                 <div className="relative w-full max-w-md animate-fade-in-up">
                     <div className="mb-3">
-                        <button className="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium transition-all shrink-0 outline-none hover:bg-accent dark:hover:bg-accent/50 h-8 rounded-3 px-3 gap-1.5 text-muted-foreground hover:text-foreground">
+                        <button onClick={handleback} className="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium transition-all shrink-0 outline-none hover:bg-accent dark:hover:bg-accent/50 h-8 rounded-3 px-3 gap-1.5 text-muted-foreground hover:text-foreground">
                             <span className="bi bi-arrow-left size-4 mb-2"></span>
                             Back
                         </button>

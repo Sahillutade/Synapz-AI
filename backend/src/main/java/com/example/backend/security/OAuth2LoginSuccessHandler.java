@@ -97,7 +97,7 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
 
         String token = jwtService.generateToken(user.getEmail());
 
-        response.sendRedirect("http://localhost:5173/login-success?token=" + URLEncoder.encode(token, StandardCharsets.UTF_8));
+        response.sendRedirect("http://localhost:5173/#/login-success?token=" + URLEncoder.encode(token, StandardCharsets.UTF_8));
 
     }
 
