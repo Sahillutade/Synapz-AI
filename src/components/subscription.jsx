@@ -1,12 +1,18 @@
 import { useEffect, useState } from "react";
 import { SiteHeader } from "./site-header";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { useCookies } from "react-cookie";
 
 
 export function Subscription() {
 
     const [billing, setBilling] = useState("MONTHLY");
     const [packages, setPackages] = useState([]);
+
+    const [cookies] = useCookies(["user"]);
+
+    let navigate = useNavigate();
 
     useEffect(() => {
         const fetchPackages = async () => {
@@ -29,6 +35,103 @@ export function Subscription() {
 
     const filterPackages = packages.filter((pkg) => pkg.billingCycle === billing);
 
+    const handleSubscribe = async (pkg) => {
+
+        try{
+
+            if(!cookies?.user){
+                alert("Login to subscribe.");
+                navigate('/login');
+            }
+
+            if(pkg.price === 0){
+
+                const responseFree = await axios.post("http://localhost:8080/subscription/free",
+                    {},
+                    {
+                        headers: {
+                            Authorization: `Bearer ${cookies?.user}`
+                        }
+                    }
+                );
+
+                alert(responseFree.data);
+                return;
+
+            }
+
+            const orderResponse = await axios.post(
+                "http://localhost:8080/subscription/create-order",
+                {
+                    packageId: pkg.id
+                },
+                {
+                    headers: {
+                        Authorization: `Bearer ${cookies?.user}`
+                    }
+                }
+            );
+
+            const {orderId, amount, key} = orderResponse.data;
+
+            const options = {
+                key,
+                amount,
+                currency: "INR",
+                name: "Synapz AI",
+                description: pkg.packagename,
+                order_id: orderId,
+
+                handler: async function (response) {
+                    try {
+                        const verifyResponse = await axios.post(
+                            "http://localhost:8080/subscription/verify",
+                            {
+                                packageId: pkg.id,
+                                razorpayOrderId: response.razorpay_order_id,
+                                razorpayPaymentId: response.razorpay_payment_id,
+                                razorpaySignature: response.razorpay_signature
+                            },
+                            {
+                                headers:{
+                                    Authorization: `Bearer ${cookies?.user}`
+                                }
+                            }
+                        );
+
+                        alert(verifyResponse.data);
+
+                        navigate();
+                    }
+                    catch (error) {
+                        console.error("Verification error: ", error);
+                        alert("Payment verification failed");
+                    }
+                },
+
+                modal: {
+                    ondismiss: () => {
+                        console.log("Checkout closed");
+                    }
+                },
+
+                theme: {
+                    color: "oklch(0.78, 0.14, 195)"
+                }
+            };
+
+            const razorpay = new window.Razorpay(options);
+
+            razorpay.open();
+
+        }
+        catch (error) {
+            console.error("Subscription error: ", error);
+            alert("Unable to process payment");
+        }
+
+    }
+
     return(
         <div className="flex min-h-screen flex-col">
             <SiteHeader />
@@ -36,7 +139,7 @@ export function Subscription() {
             <main className="relative mx-auto w-full max-w-6xl flex-1 px-4 py-8 sm:px-6">
                 <div className="absolute inset-x-0 top-0 h-64 glow-grid opacity-30" aria-hidden="true"></div>
                 <div className="relative">
-                    <button className="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium transition-all shrink-0 outline-none focus:border-ring focus:ring-ring/50 focus:ring-[3px] hover:bg-accent dark:hover:bg-accent/50 h-8 rounded-3 px-3 gap-1.5 text-muted-foreground hover:text-foreground mb-4">
+                    <button onClick={() => navigate('/')} className="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium transition-all shrink-0 outline-none focus:border-ring focus:ring-ring/50 focus:ring-[3px] hover:bg-accent dark:hover:bg-accent/50 h-8 rounded-3 px-3 gap-1.5 text-muted-foreground hover:text-foreground mb-4">
                         <span className="bi bi-arrow-left size-4 mb-2" />
                         Back
                     </button>
@@ -80,7 +183,7 @@ export function Subscription() {
                                 </span>
                             </div>
                             
-                            <button className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-3 text-sm font-medium transition-all shrink-0 outline-none focus:border-ring focus:ring-ring/50 focus:ring-[3px] bg-background shadow-xs hover:bg-accent hover:text-accent-foreground dark:bg-input/30 h-9 px-4 py-2 mt-5 w-full text-foreground">
+                            <button onClick={() => handleSubscribe(pkg)} className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-3 text-sm font-medium transition-all shrink-0 outline-none focus:border-ring focus:ring-ring/50 focus:ring-[3px] bg-background shadow-xs hover:bg-accent hover:text-accent-foreground dark:bg-input/30 h-9 px-4 py-2 mt-5 w-full text-foreground">
                                 { (pkg.price === 0) ? "Get Started" : "Choose plan" }
                             </button>
 

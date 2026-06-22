@@ -153,7 +153,7 @@ export function LandingPage() {
                     <div className="flex gap-5">
                         <Link to={'/login'} className="hover:text-foreground text-decoration-none" style={{ color: 'var(--muted-foreground)' }}>Log in</Link>
                         <Link to={'/registerstep1'} className="hover:text-foreground text-decoration-none" style={{ color: 'var(--muted-foreground)' }}>Register</Link>
-                        <Link className="hover:text-foreground text-decoration-none" style={{ color: 'var(--muted-foreground)' }}>Pricing</Link>
+                        <Link to={'/subscription'} className="hover:text-foreground text-decoration-none" style={{ color: 'var(--muted-foreground)' }}>Pricing</Link>
                     </div>
                 </div>
             </footer>

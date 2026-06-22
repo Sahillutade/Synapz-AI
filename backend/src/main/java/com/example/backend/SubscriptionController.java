@@ -1,5 +1,6 @@
 package com.example.backend;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -59,7 +60,7 @@ public class SubscriptionController {
         SubscriptionPackage pack = packageRepository.findById(request.getPackageId()).orElseThrow();
 
         com.razorpay.Order order = razorpayService.creatOrder(pack.getPrice().doubleValue());
-
+        /* 
         return ResponseEntity.ok(
             Map.of(
                 "orderId", order.get("id"),
@@ -67,7 +68,17 @@ public class SubscriptionController {
                 "key", razorpayKey
             )
         );
+        */
 
+        Object amount = order.get("amount");
+
+       Map<String, Object> response = new HashMap<>();
+
+        response.put("orderId", order.toJson().get("id"));
+        response.put("amount", ((Integer) amount).longValue()); // use the already retrieved Object amount
+        response.put("key", razorpayKey);
+
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping("/verify")
@@ -100,6 +111,7 @@ public class SubscriptionController {
 
     }
 
+    @PostMapping("/free")
     public ResponseEntity<?> subscribeFreePackage(Authentication authentication) {
 
         User user = userRepository.findByEmail(authentication.getName()).orElseThrow(() -> new RuntimeException("User not found"));

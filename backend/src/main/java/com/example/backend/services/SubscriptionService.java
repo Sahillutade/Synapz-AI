@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.backend.dto.PackageFeatureDTO;
 import com.example.backend.dto.SubscriptionPackageDTO;
+import com.example.backend.enums.BillingCycle;
 import com.example.backend.enums.PaymentStatus;
 import com.example.backend.enums.SubscriptionStatus;
 import com.example.backend.model.Payment;
@@ -103,7 +104,7 @@ public class SubscriptionService {
 
     public void activateFreeSubscription(User user) {
 
-        SubscriptionPackage freePackage = packageRepo.findByPackageName("Free").orElseThrow(() -> new RuntimeException("Free package not found"));
+        SubscriptionPackage freePackage = packageRepo.findByPackageNameAndBillingCycle("Free", BillingCycle.MONTHLY).orElseThrow(() -> new RuntimeException("Free package not found"));
 
         UserSubscription subscription = new UserSubscription();
 

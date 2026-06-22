@@ -81,7 +81,7 @@ export function SiteHeader() {
                                         <span className="bi bi-person size-4" />
                                         Profile Settings
                                     </Link> </li>
-                                    <li> <Link style={{ color: 'var(--muted-foreground)' }} className="text-muted-foreground relative flex cursor-default items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-hidden select-none text-decoration-none">
+                                    <li> <Link to={"/subscription"} style={{ color: 'var(--muted-foreground)' }} className="text-muted-foreground relative flex cursor-default items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-hidden select-none text-decoration-none">
                                         <span className="bi bi-credit-card size-4" />
                                         Subscription
                                     </Link> </li>
