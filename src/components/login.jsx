@@ -38,7 +38,7 @@ export function Login() {
             const result = await response.data;
 
             alert(result);
-            navigate('/subscription');
+            navigate('/chat');
             setCookie("user", result?.token, {
                 path: "/"
             });

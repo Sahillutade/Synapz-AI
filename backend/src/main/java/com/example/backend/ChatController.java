@@ -1,6 +1,7 @@
 package com.example.backend;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +20,9 @@ import com.example.backend.dto.ChatMessageRequest;
 import com.example.backend.dto.ChatMessageResponse;
 import com.example.backend.dto.UpdateChatTitleRequest;
 import com.example.backend.model.Chat;
+import com.example.backend.model.User;
+import com.example.backend.repository.ChatRepository;
+import com.example.backend.repository.UserRepository;
 import com.example.backend.services.ChatService;
 
 @RestController
@@ -27,6 +31,25 @@ public class ChatController {
 
     @Autowired
     private ChatService chatService;
+
+    @Autowired
+    private ChatRepository chatRepository;
+
+    @Autowired
+    private UserRepository userRepo;
+
+    @GetMapping("/my-chats")
+    public ResponseEntity<?> getMyChats(Authentication authentication) {
+
+        String email = authentication.getName();
+
+        User user = userRepo.findByEmail(email).orElseThrow(() -> new RuntimeException("User not found"));
+
+        List<Chat> chats = chatRepository.findByUser(user);
+
+        return ResponseEntity.ok(chats);
+
+    }
 
     @GetMapping("/{chatId}/messages")
     public ResponseEntity<?> getChatMessages(Authentication authentication, @PathVariable Long chatId) {

@@ -7,6 +7,7 @@ import { RegisterOtp } from './components/register-otp'
 import { Subscription } from './components/subscription'
 import { Login } from './components/login'
 import { AuthSuccess } from './components/auth-success'
+import { ChatPage } from './components/chat'
 
 function App() {
 
@@ -20,6 +21,7 @@ function App() {
         <Route path='/login' element={<Login />}></Route>
         <Route path='/subscription' element={<Subscription />}></Route>
         <Route path='/login-success' element={<AuthSuccess />}></Route>
+        <Route path='/chat' element={<ChatPage />}></Route>
       </Routes>
     </HashRouter>
     </main>
